@@ -32,7 +32,9 @@ const placeOrder = async (req, res) => {
     }
 };
 
-
+const phonePeCallback = (req, res) => {
+    // your callback logic here
+};
 
 
 
@@ -95,4 +97,4 @@ const updateStatus = async (req,res)=>{
     
 }
 
-export{placeOrder,allOrders,userOrders,updateStatus}
+export { placeOrder, allOrders, userOrders, updateStatus, phonePeCallback };
