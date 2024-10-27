@@ -32,88 +32,11 @@ const placeOrder = async (req, res) => {
     }
 };
 
-// Placing order using PhonePe method
-const placeOrderPhonepe = async (req, res) => {
-    try {
-        const { userId, items, amount, address } = req.body;
 
-        // Step 1: Save the order to your database
-        const orderData = {
-            userId,
-            items,
-            amount,
-            address,
-            paymentMethod: "PhonePe",
-            payment: false,
-            date: Date.now(),
-        };
-        const newOrder = new orderModel(orderData);
-        await newOrder.save();
 
-        // Step 2: Prepare the payload
-        const payload = {
-            merchantId: process.env.PHONEPE_KEY_ID,
-            merchantTransactionId: newOrder._id.toString(), // Unique transaction ID
-            amount: amount * 100, // Amount in paise
-            callbackUrl: "https://localhost:4000/api/order/phonepe/callback", // Your success callback URL
-            redirectUrl: "https://localhost:4000/api/order/phonepe", // Your redirect URL
-            redirectMode: "REDIRECT", // or "POST"
 
-        };
 
-        // Step 3: Generate the signature
-        const secretKey = process.env.PHONEPE_KEY_SECRET; // Replace with your actual secret key
-        const payloadString = JSON.stringify(payload);
-        const signature = generateSignature(payloadString, secretKey);
 
-        // Step 4: Send request to PhonePe
-        const phonePeResponse = await axios.post('https://api-preprod.phonepe.com/apis/pg/v1/pay', {
-            request: Buffer.from(payloadString).toString('base64'), // Base64 encode the payload
-        }, {
-            headers: {
-                'X-VERIFY': `${signature}###${secretKey}`,
-                'Content-Type': 'application/json',
-            },
-        });
-
-        // Step 5: Handle the response
-        if (phonePeResponse.data.success) {
-            res.json({ success: true, paymentUrl: phonePeResponse.data.paymentUrl });
-        } else {
-            res.json({ success: false, message: phonePeResponse.data.message });
-        }
-    } catch (error) {
-        console.log(error);
-        res.json({ success: false, message: error.message });
-    }
-};
-
-// Checking PhonePe callback
-const phonePeCallback = async (req, res) => {
-    try {
-        const { transactionId, status } = req.body;
-
-        // Check the status and update the order
-        if (status === 'SUCCESS') {
-            await orderModel.updateOne({ _id: transactionId }, { payment: true });
-            return res.json({ success: true, message: 'Payment successful' });
-        } else {
-            return res.json({ success: false, message: 'Payment failed' });
-        }
-    } catch (error) {
-        console.log(error);
-        res.status(500).json({ success: false, message: error.message });
-    }
-};
-
-// Other functions (placeOrderRazorpay, allOrders, userOrders, updateStatus) remain unchanged...
-
-export { placeOrder, placeOrderPhonepe, phonePeCallback };
-//placing order using Razorpay method
-
-const placeOrderRazorpay = async (req,res)=>{
-    
-}
 
 // All orders data for admin pannel 
 
@@ -172,4 +95,4 @@ const updateStatus = async (req,res)=>{
     
 }
 
-export{placeOrder,placeOrderPhonepe,phonePeCallback,placeOrderRazorpay,allOrders,userOrders,updateStatus}
+export{placeOrder,allOrders,userOrders,updateStatus}
