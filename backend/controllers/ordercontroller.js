@@ -32,7 +32,6 @@ const placeOrder = async (req, res) => {
     }
 };
 
-
 // Example implementation for phonePeCallback
 const phonePeCallback = async (req, res) => {
     // Your callback logic here
@@ -45,75 +44,47 @@ const placeOrderPhonepe = async (req, res) => {
     res.json({ success: true, message: "Order placed with PhonePe" });
 };
 
-
-
-
-
-
-// All orders data for admin pannel 
-
-//placing order using COD method
-
-const allOrders = async (req,res)=>{
-
+// All orders data for admin panel 
+const allOrders = async (req, res) => {
     try {
-
-        const orders= await orderModel.find({})
-         res.json({success:true,orders})
-
+        const orders = await orderModel.find({});
+        res.json({ success: true, orders });
     } catch (error) {
-
-        console.log(error)
-        res.json({success:false,message:error.message})
-        
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
-}
+};
 
-//User order data for frontend
-
-const userOrders = async (req,res)=>{
-
+// User order data for frontend
+const userOrders = async (req, res) => {
     try {
-
-        const {userId}=req.body
-        const orders = await orderModel.find({userId})
-        res.json({success:true,orders})
-        
+        const { userId } = req.body;
+        const orders = await orderModel.find({ userId });
+        res.json({ success: true, orders });
     } catch (error) {
-
-        console.log(error)
-        res.json({success:false,message:error.message})
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
-    
-}
+};
 
-//updating order status from Admin Pannel
-
-const updateStatus = async (req,res)=>{
-
+// Updating order status from Admin Panel
+const updateStatus = async (req, res) => {
     try {
-         
-        const {orderId, status}= req.body
-        await orderModel.findByIdAndUpdate(orderId,{status})
-
-        res.json({success:true,message:"Status Updated"})
-
+        const { orderId, status } = req.body;
+        await orderModel.findByIdAndUpdate(orderId, { status });
+        res.json({ success: true, message: "Status Updated" });
     } catch (error) {
-
-        console.log(error)
-        res.json({success:false,message:error.message})
-        
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
-    
-}
+};
 
+// Exporting functions
 export {
     placeOrder,
     placeOrderPhonepe,
-    placeOrderRazorpay,
     allOrders,
     userOrders,
     updateStatus,
     phonePeCallback
 };
-
