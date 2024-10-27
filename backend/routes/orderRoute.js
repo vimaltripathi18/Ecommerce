@@ -1,13 +1,13 @@
 import express from 'express';
 import adminAuth from '../middleware/adminAuth.js';
 import authuser from '../middleware/auth.js';
-import {
-    placeOrder,
-    placeOrderPhonepe,
-    placeOrderRazorpay,
-    allOrders,
-    userOrders,
-    updateStatus,
+import { 
+    placeOrder, 
+    placeOrderPhonepe, 
+    placeOrderRazorpay, 
+    allOrders, 
+    userOrders, 
+    updateStatus, 
     phonePeCallback 
 } from '../controllers/ordercontroller.js';
 
