@@ -32,9 +32,19 @@ const placeOrder = async (req, res) => {
     }
 };
 
-const phonePeCallback = (req, res) => {
-    // your callback logic here
+
+// Example implementation for phonePeCallback
+const phonePeCallback = async (req, res) => {
+    // Your callback logic here
+    res.json({ success: true, message: "PhonePe callback handled" });
 };
+
+// Example implementation for placeOrderPhonepe
+const placeOrderPhonepe = async (req, res) => {
+    // Your logic for placing order using PhonePe here
+    res.json({ success: true, message: "Order placed with PhonePe" });
+};
+
 
 
 
@@ -97,4 +107,4 @@ const updateStatus = async (req,res)=>{
     
 }
 
-export { placeOrder, allOrders, userOrders, updateStatus, phonePeCallback };
+export { placeOrder, allOrders, userOrders, updateStatus, phonePeCallback,placeOrderPhonepe };
