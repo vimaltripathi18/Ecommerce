@@ -107,4 +107,13 @@ const updateStatus = async (req,res)=>{
     
 }
 
-export { placeOrder, allOrders, userOrders, updateStatus, phonePeCallback,placeOrderPhonepe };
+export {
+    placeOrder,
+    placeOrderPhonepe,
+    placeOrderRazorpay,
+    allOrders,
+    userOrders,
+    updateStatus,
+    phonePeCallback
+};
+
