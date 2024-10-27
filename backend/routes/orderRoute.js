@@ -4,7 +4,6 @@ import authuser from '../middleware/auth.js';
 import { 
     placeOrder, 
     placeOrderPhonepe, 
-    placeOrderRazorpay, 
     allOrders, 
     userOrders, 
     updateStatus, 
@@ -20,7 +19,6 @@ orderRouter.post('/status', adminAuth, updateStatus);
 // payment features
 orderRouter.post('/place', authuser, placeOrder);
 orderRouter.post('/phonepe', authuser, placeOrderPhonepe);
-orderRouter.post('/razorpay', authuser, placeOrderRazorpay);
 
 // user features
 orderRouter.post('/useorders', authuser, userOrders);
