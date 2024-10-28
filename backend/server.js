@@ -16,11 +16,11 @@ connectDB();
 connectCloudinary();
 
 // Apply CORS middleware
+const cors = require('cors');
 app.use(cors({
-  origin: ['https://admin.piiwear.com'], 
-  methods: 'GET,POST,PUT,DELETE',
-  credentials: true
+    origin: 'https://admin.piiwear.com',
 }));
+
 
 
 // Parse incoming requests
@@ -37,11 +37,6 @@ app.get('/', (req, res) => {
   res.send('API');
 });
 
-// Error Handling Middleware (for debugging purposes)
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send({ error: 'An error occurred!' });
-});
 
 // Start server
 app.listen(port, () => {
