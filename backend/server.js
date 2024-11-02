@@ -16,11 +16,14 @@ connectDB();
 connectCloudinary();
 
 // Apply CORS middleware
-const cors = require('cors');
+
+const allowedOrigins = [
+    'https://piiwear.com',
+    'https://admin.piiwear.com'
+];
+
 app.use(cors({
-  origin: '*',
-  methods: 'GET,POST,PUT,DELETE',
-  credentials: true
+  origin:allowedOrigins,
 }));
 
 
