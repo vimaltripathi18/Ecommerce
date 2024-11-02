@@ -1,5 +1,4 @@
 import express from 'express';
-import cors from 'cors';
 import 'dotenv/config';
 import connectDB from './config/mongodb.js';
 import connectCloudinary from './config/cloudinary.js';
@@ -15,26 +14,29 @@ const port = process.env.PORT || 4000;
 connectDB();
 connectCloudinary();
 
-// Apply CORS middleware
-
+// Define allowed origins
 const allowedOrigins = [
     'https://piiwear.com',
     'https://admin.piiwear.com'
 ];
 
-app.use(cors({
-    origin: (origin, callback) => {
-        // Check if the request's origin is in the allowedOrigins array
-        if (allowedOrigins.includes(origin)) {
-            callback(null, origin); // Only allow the specific origin
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
+// CORS Middleware - Handle Dynamic Origins and Preflight Requests
+app.use((req, res, next) => {
+    const origin = req.headers.origin;
+
+    if (allowedOrigins.includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+        res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     }
-}));
 
+    // Handle OPTIONS preflight requests for CORS
+    if (req.method === 'OPTIONS') {
+        return res.sendStatus(200); // End preflight request
+    }
 
-
+    next();
+});
 
 // Parse incoming requests
 app.use(express.json());
@@ -47,11 +49,11 @@ app.use('/api/order', orderRouter);
 
 // Default route for testing server is running
 app.get('/', (req, res) => {
-  res.send('API');
+    res.send('API is running');
 });
 
-
-// Start server
+// Start the server
 app.listen(port, () => {
-  console.log(`Server is running on port: ${port}`);
+    console.log(`Server running on port ${port}`);
 });
+
