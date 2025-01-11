@@ -20,19 +20,23 @@ const allowedOrigins = [
     'https://admin.piiwear.com'
 ];
 
-// CORS Middleware - Handle Dynamic Origins and Preflight Requests
+// CORS Middleware - Fixes the "multiple values" CORS issue
 app.use((req, res, next) => {
     const origin = req.headers.origin;
+    
+    console.log(`Request Origin: ${origin}`); // Debugging: Log incoming origin
 
     if (allowedOrigins.includes(origin)) {
-        res.setHeader('Access-Control-Allow-Origin', origin);
+        res.setHeader('Access-Control-Allow-Origin', origin); // Set only the request's origin
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
         res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+        res.setHeader('Access-Control-Allow-Credentials', 'true'); // Allow credentials
+        res.setHeader('Access-Control-Max-Age', '86400'); // Cache preflight request for 24 hours
     }
 
     // Handle OPTIONS preflight requests for CORS
     if (req.method === 'OPTIONS') {
-        return res.sendStatus(200); // End preflight request
+        return res.sendStatus(200);
     }
 
     next();
@@ -47,7 +51,7 @@ app.use('/api/product', productRouter);
 app.use('/api/cart', cartRouter);
 app.use('/api/order', orderRouter);
 
-// Default route for testing server is running
+// Default route for testing if the server is running
 app.get('/', (req, res) => {
     res.send('API is running');
 });
